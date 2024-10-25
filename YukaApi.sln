@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YukaWeb", "YukaWeb\YukaWeb.csproj", "{1DA3EDEC-7C6E-4EA5-9D53-DB5B9D3C9122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YukaDAL", "YukaDAL\YukaDAL.csproj", "{34B92E6D-8FC6-40B8-BB0C-3513D7A28D72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YukaBLL", "YukaBLL\YukaBLL.csproj", "{993AA154-AC96-40A0-9EA3-5A61B050935C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DA3EDEC-7C6E-4EA5-9D53-DB5B9D3C9122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA3EDEC-7C6E-4EA5-9D53-DB5B9D3C9122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA3EDEC-7C6E-4EA5-9D53-DB5B9D3C9122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA3EDEC-7C6E-4EA5-9D53-DB5B9D3C9122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B92E6D-8FC6-40B8-BB0C-3513D7A28D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B92E6D-8FC6-40B8-BB0C-3513D7A28D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B92E6D-8FC6-40B8-BB0C-3513D7A28D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B92E6D-8FC6-40B8-BB0C-3513D7A28D72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993AA154-AC96-40A0-9EA3-5A61B050935C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993AA154-AC96-40A0-9EA3-5A61B050935C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993AA154-AC96-40A0-9EA3-5A61B050935C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993AA154-AC96-40A0-9EA3-5A61B050935C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91C18D60-D09B-40E4-BDCE-EE05E4AFD747}
+	EndGlobalSection
+EndGlobal
