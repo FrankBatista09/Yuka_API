@@ -8,10 +8,10 @@ namespace YukaDAL.Context
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductBrandPriceGroup> ProductBrandPriceGroups { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<Size> Sizes { get; set; }
-        public DbSet<SizeGroup> SizeGroups { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SizeCategory> SizeCategories { get; set; }
 
         public YukaContext(DbContextOptions<YukaContext> options) : base(options) { }
         
@@ -51,36 +51,11 @@ namespace YukaDAL.Context
             modelBuilder.Entity<Product>()
                 .Property(p => p.ProductId)
                 .ValueGeneratedOnAdd();
-            #endregion
 
-
-            #region ProductBrandPriceGroup configurations
-            //Indicate the primary key
-            modelBuilder.Entity<ProductBrandPriceGroup>()
-                .HasKey(p => p.PriceGroupId);
-
-            //Indicate the primary key is generated on add(identity)
-            modelBuilder.Entity<ProductBrandPriceGroup>()
-                .Property(p => p.PriceGroupId)
-                .ValueGeneratedOnAdd();
-
-            //Relation n:1 with brand
-            modelBuilder.Entity<ProductBrandPriceGroup>()
-                .HasOne(p => p.Brand)
-                .WithMany(b => b.ProductBrandPriceGroups)
-                .HasForeignKey(p => p.BrandId);
-
-            //Relation n:1 with Product
-            modelBuilder.Entity<ProductBrandPriceGroup>()
-                .HasOne(p => p.Product)
-                .WithMany(pr => pr.ProductBrandPriceGroups)
-                .HasForeignKey(p => p.ProductId);
-
-            //Relation n:1 with Size Group
-            modelBuilder.Entity<ProductBrandPriceGroup>()
-                .HasOne(p => p.SizeGroup)
-                .WithMany(sg => sg.ProductBrandPriceGroups)
-                .HasForeignKey(p => p.SizeGroupId);
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId);
             #endregion
 
 
@@ -114,9 +89,9 @@ namespace YukaDAL.Context
 
             //Relation N:1 with ProductBrandPriceGroup
             modelBuilder.Entity<ProductVariant>()
-                .HasOne(p => p.ProductBrandPriceGroup)
-                .WithMany(pb => pb.ProductVariants)
-                .HasForeignKey(p => p.PriceGroupId);
+                .HasOne(p => p.Brand)
+                .WithMany(b => b.ProductVariants)
+                .HasForeignKey(p => p.BrandId);
 
             #endregion
 
@@ -130,25 +105,32 @@ namespace YukaDAL.Context
             modelBuilder.Entity<Size>()
                 .Property(s => s.SizeId)
                 .ValueGeneratedOnAdd();
-
-            //Relation n:1 with SizeGroup
-            modelBuilder.Entity<Size>()
-                .HasOne(s => s.SizeGroup)
-                .WithMany(sg => sg.Sizes)
-                .HasForeignKey(s => s.SizeGroupId);
             #endregion
 
+            #region Category configurations
+            modelBuilder.Entity<Category>()
+                .HasKey(p => p.CategoryId);
 
-            #region SizeGroup configurations
-            //Indicate the primary key
-            modelBuilder.Entity<SizeGroup>()
-                .HasKey(s => s.SizeGroupId);
-
-            //Indicate that is a value generated on Add(Identity)
-            modelBuilder.Entity<SizeGroup>()
-                .Property(s => s.SizeGroupId)
+            modelBuilder.Entity<Category>()
+                .Property(p => p.CategoryId)
                 .ValueGeneratedOnAdd();
             #endregion
+
+            #region SizeCategory configurations
+            modelBuilder.Entity<SizeCategory>()
+                .HasKey(sc => new { sc.CategoryId, sc.SizeId }); // Clave compuesta
+
+            modelBuilder.Entity<SizeCategory>()
+                .HasOne(sc => sc.Category)
+                .WithMany(s => s.SizeCategories)
+                .HasForeignKey(sc => sc.CategoryId);
+
+            modelBuilder.Entity<SizeCategory>()
+                .HasOne(sc => sc.Size)
+                .WithMany(c => c.SizeCategories)
+                .HasForeignKey(sc => sc.SizeId);
+            #endregion
+
 
         }
     }

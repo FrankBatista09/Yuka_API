@@ -45,6 +45,27 @@ namespace YukaDAL.Repositories
 
         }
 
+        public async Task DeleteAsync(Size entity)
+        {
+            try
+            {
+                var size = await GetByIdAsync(entity.SizeId);
+
+                if (size == null)
+                    throw new NullReferenceException("The entity to delete does not exist.");
+
+                size.DeletedDate = DateTime.Now;
+                size.DeletedBy = entity.DeletedBy;
+                size.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in DeleteAsync for Size entity.");
+                throw;
+            }
+        }
+
         public async Task<bool> ExistsAsync(Expression<Func<Size, bool>> expression)
         {
             //No need to implement try catch because Any will throw an exception if it fails
@@ -89,22 +110,24 @@ namespace YukaDAL.Repositories
             }
         }
 
-        public async Task<SizeGroup> GetSizeGroupBySizeName(string SizeName)
+        public async Task UpdateAsync(Size entity)
         {
             try
             {
-                //Early return of null exception if SizeName is null
-                if (string.IsNullOrWhiteSpace(SizeName))
-                    throw new ArgumentNullException(nameof(SizeName), "The SizeName to get the SizeGroup cannot be null.");
-                
-                return await _context.Sizes
-                    .Where(s => s.SizeName == SizeName) //Filter by SizeName
-                    .Select(s => s.SizeGroup) //Select the SizeGroup using the navigation property
-                    .FirstOrDefaultAsync(); //Get the first result or null
+                var size = await GetByIdAsync(entity.SizeId);
+
+                if (size == null)
+                    throw new NullReferenceException("The entity to update does not exist.");
+
+                size.UpdatedBy = entity.UpdatedBy;
+                size.UpdatedDate = DateTime.Now;
+                size.SizeName = entity.SizeName;
+
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred in GetSizeGroupBySizeName for Size entity.");
+                _logger.LogError(ex, "An unexpected error occurred in UpdateAsync for Size entity.");
                 throw;
             }
         }

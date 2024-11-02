@@ -43,6 +43,25 @@ namespace YukaDAL.Repositories
             }
         }
 
+        public async Task DeleteAsync(Brand entity)
+        {
+            try
+            {
+                var brand = await GetByIdAsync(entity.BrandId);
+
+                if (brand == null)
+                    throw new NullReferenceException("The entity to delete does not exist.");
+                brand.DeletedDate = DateTime.Now;
+                brand.DeletedBy = entity.DeletedBy;
+                brand.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in DeleteAsync for Brand entity.");
+                throw;
+            }
+        }
 
         public async Task<bool> ExistsAsync(Expression<Func<Brand, bool>> expression)
         {
@@ -94,6 +113,28 @@ namespace YukaDAL.Repositories
                 throw;
             }
 
+        }
+
+        public async Task UpdateAsync(Brand entity)
+        {
+            try
+            {
+                var brand = await GetByIdAsync(entity.BrandId);
+
+                if (brand == null)
+                    throw new NullReferenceException("The entity to update does not exist.");
+
+                brand.UpdatedBy = entity.UpdatedBy;
+                brand.UpdatedDate = DateTime.Now;
+                brand.BrandName = entity.BrandName;
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in UpdateAsync for Brand entity.");
+                throw;
+            }
         }
     }
 }

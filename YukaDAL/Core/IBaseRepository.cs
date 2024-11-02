@@ -20,7 +20,7 @@ namespace YukaDAL.Core
         /// <summary>
         /// Generic Method to get x entity by its id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The id of the entity</param>
         /// <returns>The entity found</returns>
         Task<TEntity> GetByIdAsync(int id);
 
@@ -30,5 +30,19 @@ namespace YukaDAL.Core
         /// <param name="expression">Lambda expression indicating the conditions for the entity</param>
         /// <returns>A bool indicating wether the entity exists or not</returns>
         Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression);
+
+        /// <summary>
+        /// SoftDelete an entity marking it as deleted and setting the DeletedDate and UserId who deleted it
+        /// </summary>
+        /// <param name="entity">Entity to delete</param>
+        /// <returns></returns>
+        Task DeleteAsync(TEntity entity);
+
+        /// <summary>
+        /// <see langword="public"/>
+        /// </summary>
+        /// <param name="entity">The entity to update</param>
+        /// <returns></returns>
+        Task UpdateAsync(TEntity entity);
     }
 }

@@ -8,7 +8,7 @@ namespace YukaDAL.Entities
         public required string BrandName { get; set; }
 
         //Relations
+        public ICollection<ProductVariant> ProductVariants { get; set; }
 
-        public ICollection<ProductBrandPriceGroup> ProductBrandPriceGroups { get; set; }
     }
 }
