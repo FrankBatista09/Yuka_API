@@ -3,7 +3,7 @@ using YukaDAL.Entities;
 
 namespace YukaDAL.Interfaces
 {
-    public interface ISizeGroupRepository : IBaseRepository<SizeGroup>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
     }
 }
