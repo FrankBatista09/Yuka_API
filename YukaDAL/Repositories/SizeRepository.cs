@@ -94,19 +94,13 @@ namespace YukaDAL.Repositories
             try
             {
                 //Early return of null exception if SizeName is null
-                if (SizeName == null)
+                if (string.IsNullOrWhiteSpace(SizeName))
                     throw new ArgumentNullException(nameof(SizeName), "The SizeName to get the SizeGroup cannot be null.");
                 
                 return await _context.Sizes
                     .Where(s => s.SizeName == SizeName) //Filter by SizeName
                     .Select(s => s.SizeGroup) //Select the SizeGroup using the navigation property
                     .FirstOrDefaultAsync(); //Get the first result or null
-            }
-            //Case that the Size Group could not be found by the SizeName
-            catch (NullReferenceException exnr)
-            {
-                _logger.LogError(exnr, "The SizeGroup to get does not exist.");
-                throw;
             }
             catch (Exception ex)
             {
