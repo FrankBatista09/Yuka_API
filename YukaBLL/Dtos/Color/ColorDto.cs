@@ -1,4 +1,4 @@
-﻿namespace YukaBLL.Core.DtosBase
+﻿namespace YukaBLL.Dtos.Color
 {
     public class ColorDto
     {
