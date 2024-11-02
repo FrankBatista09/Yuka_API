@@ -39,9 +39,9 @@ namespace YukaDAL.Core
         Task DeleteAsync(TEntity entity);
 
         /// <summary>
-        /// <see langword="public"/>
+        /// Updates the fields of an entity
         /// </summary>
-        /// <param name="entity">The entity to update</param>
+        /// <param name="entity">The entity with the changes to update</param>
         /// <returns></returns>
         Task UpdateAsync(TEntity entity);
     }
