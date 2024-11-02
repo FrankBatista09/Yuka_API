@@ -2,8 +2,9 @@
 
 namespace YukaBLL.Dtos.ProductVariant
 {
-    public class DeleteProductVariantDto : DeleteDto
+    public class AddStockDto : UpdateDto
     {
         public int ProductVariantId { get; set; }
+        public int StockToAdd { get; set; }
     }
 }
