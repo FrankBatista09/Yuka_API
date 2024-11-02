@@ -80,18 +80,16 @@ namespace YukaDAL.Repositories
         {
             try
             {
+                //Case that the id is null
+                if (id == null)
+                    throw new ArgumentNullException(nameof(id), "The id to get cannot be null.");
+
                 return await _context.Brands.FindAsync(id);
             }
             //Case that the id does not exist
             catch (NullReferenceException exnr)
             {
                 _logger.LogError(exnr, "The id to get does not exist.");
-                throw;
-            }
-            //Case that the id is null
-            catch (ArgumentNullException exn)
-            {
-                _logger.LogError(exn, "The id to get cannot be null.");
                 throw;
             }
             //Case not controlled
