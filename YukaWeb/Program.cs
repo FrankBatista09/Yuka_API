@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<YukaContext>(options =>
-        options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION"), sqlOptions =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Yuka_API") ?? Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION"), sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
 
