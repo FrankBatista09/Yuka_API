@@ -1,6 +1,8 @@
-﻿namespace YukaDAL.Entities
+﻿using YukaDAL.Core;
+
+namespace YukaDAL.Entities
 {
-    public class ProductBrandPriceGroup
+    public class ProductBrandPriceGroup : Entity
     {
         public int PriceGroupId { get; set; }
         public int ProductId { get; set; }

@@ -2,7 +2,7 @@
 
 namespace YukaDAL.Core
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : Entity 
     {
         /// <summary>
         /// Generic method to create a new entity

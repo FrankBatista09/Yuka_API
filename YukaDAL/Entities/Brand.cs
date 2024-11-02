@@ -1,6 +1,8 @@
-﻿namespace YukaDAL.Entities
+﻿using YukaDAL.Core;
+
+namespace YukaDAL.Entities
 {
-    public class Brand
+    public class Brand : Entity
     {
         public int BrandId {  get; set; }
         public required string BrandName { get; set; }

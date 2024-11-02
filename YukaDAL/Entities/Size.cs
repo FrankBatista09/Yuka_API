@@ -1,6 +1,8 @@
-﻿namespace YukaDAL.Entities
+﻿using YukaDAL.Core;
+
+namespace YukaDAL.Entities
 {
-    public class Size
+    public class Size : Entity
     {
         public int SizeId { get; set; }
         public required string SizeName { get; set; }

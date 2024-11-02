@@ -1,6 +1,8 @@
-﻿namespace YukaDAL.Entities
+﻿using YukaDAL.Core;
+
+namespace YukaDAL.Entities
 {
-    public class ProductVariant
+    public class ProductVariant : Entity
     {
         public int VariantId { get; set; }
         public int ProductId { get; set; }

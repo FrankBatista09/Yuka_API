@@ -1,6 +1,8 @@
-﻿namespace YukaDAL.Entities
+﻿using YukaDAL.Core;
+
+namespace YukaDAL.Entities
 {
-    public class Product
+    public class Product : Entity
     {
         public int ProductId { get; set; }
         public required string ProductName { get; set; }
