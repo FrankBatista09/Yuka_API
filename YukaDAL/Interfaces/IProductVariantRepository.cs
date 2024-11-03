@@ -45,5 +45,12 @@ namespace YukaDAL.Interfaces
         /// <returns></returns>
         Task AddToStock(int id, int quantity);
 
+        /// <summary>
+        /// Gets the quantity of a product variant
+        /// </summary>
+        /// <param name="variantId"></param>
+        /// <returns></returns>
+        Task<int> GetQuantityAsync(int variantId);
+
     }
 }
