@@ -2,7 +2,7 @@
 
 namespace YukaBLL.Dtos.Product
 {
-    public class UpdateProductDto : UpdateDto
+    public class UpdateProductDto : UpdateDto 
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
