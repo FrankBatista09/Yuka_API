@@ -28,6 +28,8 @@ namespace YukaDAL.Repositories
                 var productVariant = await GetByIdAsync(entity.VariantId);
 
                 productVariant.Quantity += entity.Quantity;
+                productVariant.UpdatedBy = entity.UpdatedBy;
+                productVariant.UpdatedDate = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException dbEx)
@@ -238,6 +240,8 @@ namespace YukaDAL.Repositories
                     throw new NullReferenceException("The Id cannot be null");
 
                 existingPrice.Price = entity.Price;
+                existingPrice.UpdatedDate = DateTime.UtcNow;
+                existingPrice.UpdatedBy = entity.UpdatedBy;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException dbEx)
@@ -263,6 +267,8 @@ namespace YukaDAL.Repositories
                 var updatedStock = await GetByIdAsync(entity.VariantId);
 
                 updatedStock.Quantity = entity.Quantity;
+                updatedStock.UpdatedBy = entity.UpdatedBy;
+                updatedStock.UpdatedDate = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException dbEx)
