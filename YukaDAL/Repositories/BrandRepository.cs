@@ -51,7 +51,7 @@ namespace YukaDAL.Repositories
 
                 if (brand == null)
                     throw new NullReferenceException("The entity to delete does not exist.");
-                brand.DeletedDate = DateTime.Now;
+                brand.DeletedDate = DateTime.UtcNow;
                 brand.DeletedBy = entity.DeletedBy;
                 brand.IsDeleted = true;
                 await _context.SaveChangesAsync();
@@ -125,7 +125,7 @@ namespace YukaDAL.Repositories
                     throw new NullReferenceException("The entity to update does not exist.");
 
                 brand.UpdatedBy = entity.UpdatedBy;
-                brand.UpdatedDate = DateTime.Now;
+                brand.UpdatedDate = DateTime.UtcNow;
                 brand.BrandName = entity.BrandName;
 
                 await _context.SaveChangesAsync();
