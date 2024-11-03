@@ -16,18 +16,16 @@ namespace YukaDAL.Interfaces
         /// <summary>
         /// Updates the price of a product variant
         /// </summary>
-        /// <param name="id">Id of the product variant</param>
-        /// <param name="newPrice">New price of the variant</param>
+        /// <param name="entity">Entity with the new Price</param>
         /// <returns></returns>
-        Task UpdatePriceAsync(int id, double newPrice);
+        Task UpdatePriceAsync(ProductVariant entity);
 
         /// <summary>
         /// Updates the stock of a product variant
         /// </summary>
-        /// <param name="id">Id of the variant</param>
-        /// <param name="newStock">Quantity to be put in stock</param>
+        /// <param name="entity">Entity with the new Stock</param>
         /// <returns></returns>
-        Task UpdateStockAsync(int id, int newStock);
+        Task UpdateStockAsync(ProductVariant entity);
 
         /// <summary>
         /// Sells a product variant
@@ -40,10 +38,16 @@ namespace YukaDAL.Interfaces
         /// <summary>
         /// Adds a quantity to the stock of a product variant
         /// </summary>
-        /// <param name="id">Id of the product variant</param>
-        /// <param name="quantity">Quantity to be added to stock</param>
+        /// <param name="entity">Entity with the stock to be added</param>
         /// <returns></returns>
-        Task AddToStock(int id, int quantity);
+        Task AddToStock(ProductVariant entity);
+
+        /// <summary>
+        /// Add multiple rows
+        /// </summary>
+        /// <param name="entities">List of entities to add</param>
+        /// <returns></returns>
+        Task BulkCreateAsync(List<ProductVariant> entities);
 
         /// <summary>
         /// Gets the quantity of a product variant
