@@ -53,7 +53,7 @@ namespace YukaDAL.Repositories
                 if (category == null)
                     throw new NullReferenceException("The entity to delete does not exist.");
 
-                entity.DeletedDate = DateTime.Now;
+                entity.DeletedDate = DateTime.UtcNow;
                 entity.DeletedBy = entity.DeletedBy;
                 entity.IsDeleted = true;
 
@@ -124,7 +124,7 @@ namespace YukaDAL.Repositories
                     throw new NullReferenceException("The entity to update does not exist.");
 
                 entityToUpdate.CategoryName = entity.CategoryName;
-                entityToUpdate.UpdatedDate = DateTime.Now;
+                entityToUpdate.UpdatedDate = DateTime.UtcNow;
                 entityToUpdate.UpdatedBy = entity.UpdatedBy;
 
                 await _context.SaveChangesAsync();
