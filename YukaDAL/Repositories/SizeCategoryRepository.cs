@@ -101,6 +101,7 @@ namespace YukaDAL.Repositories
                 if (id == null)
                     throw new ArgumentNullException(nameof(id), "The Id to get cannot be null");
                 return await _context.SizeCategories.FindAsync(id);
+                
             }
             catch (NullReferenceException exn)
             {
@@ -110,6 +111,25 @@ namespace YukaDAL.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred in GetByIdAsync for SizeCategory entity");
+                throw;
+            }
+        }
+
+        public Task<List<Size>> SizeByCategory(int categoryID)
+        {
+            try
+            {
+                if (categoryID == null)
+                    throw new ArgumentNullException(nameof(categoryID), "The Id to get cannot be null");
+                return _context.SizeCategories
+                    .Where(sc => sc.CategoryId == categoryID)
+                    .Select(sc => sc.Size)
+                    .Distinct()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in SizeByCategory for SizeCategory entity");
                 throw;
             }
         }

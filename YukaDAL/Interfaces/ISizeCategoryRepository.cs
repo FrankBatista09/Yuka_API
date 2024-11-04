@@ -10,6 +10,11 @@ namespace YukaDAL.Interfaces
 {
     public interface ISizeCategoryRepository : IBaseRepository<SizeCategory>
     {
-
+        /// <summary>
+        /// Get sizes by category
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        Task<List<Size>> SizeByCategory(int categoryID);
     }
 }
