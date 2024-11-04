@@ -13,8 +13,8 @@ namespace YukaDAL.Interfaces
         /// <summary>
         /// Get sizes by category
         /// </summary>
-        /// <param name="categoryID"></param>
-        /// <returns></returns>
+        /// <param name="categoryID">The Id of the category</param>
+        /// <returns>List of the sizes that belong to that category</returns>
         Task<List<Size>> SizeByCategory(int categoryID);
     }
 }
