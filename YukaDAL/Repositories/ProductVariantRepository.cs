@@ -174,6 +174,26 @@ namespace YukaDAL.Repositories
             }
         }
 
+        public async Task<int> GetQuantityAsync(int variantId)
+        {
+            try
+            {
+                var variant = await GetByIdAsync(variantId);
+
+                return variant.Quantity;
+            }
+            catch (DbUpdateException) 
+            { 
+                _logger.LogError("Database Update error in GetQuantityAsync for ProductVariant entity");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in GetQuantityAsync for ProductVariant entity");
+                throw;
+            }
+        }
+
         public async Task SellAsync(int id, int quantity)
         {
             try
