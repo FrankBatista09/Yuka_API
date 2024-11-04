@@ -54,7 +54,7 @@ namespace YukaDAL.Repositories
                 if (size == null)
                     throw new NullReferenceException("The entity to delete does not exist.");
 
-                size.DeletedDate = DateTime.Now;
+                size.DeletedDate = DateTime.UtcNow;
                 size.DeletedBy = entity.DeletedBy;
                 size.IsDeleted = true;
                 await _context.SaveChangesAsync();
@@ -120,7 +120,7 @@ namespace YukaDAL.Repositories
                     throw new NullReferenceException("The entity to update does not exist.");
 
                 size.UpdatedBy = entity.UpdatedBy;
-                size.UpdatedDate = DateTime.Now;
+                size.UpdatedDate = DateTime.UtcNow;
                 size.SizeName = entity.SizeName;
 
                 await _context.SaveChangesAsync();

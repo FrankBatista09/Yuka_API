@@ -53,7 +53,7 @@ namespace YukaDAL.Repositories
                 if (category == null)
                     throw new NullReferenceException("The entity to delete does not exist.");
 
-                entity.DeletedDate = DateTime.Now;
+                entity.DeletedDate = DateTime.UtcNow;
                 entity.DeletedBy = entity.DeletedBy;
                 entity.IsDeleted = true;
 
@@ -124,7 +124,7 @@ namespace YukaDAL.Repositories
                     throw new NullReferenceException("The entity to update does not exist.");
 
                 entityToUpdate.CategoryName = entity.CategoryName;
-                entityToUpdate.UpdatedDate = DateTime.Now;
+                entityToUpdate.UpdatedDate = DateTime.UtcNow;
                 entityToUpdate.UpdatedBy = entity.UpdatedBy;
 
                 await _context.SaveChangesAsync();
@@ -135,5 +135,38 @@ namespace YukaDAL.Repositories
                 throw;
             }
         }
+
+        public async Task CreateCategoryWithSizesAsync(Category newCategory, List<Size> selectedSizeIds)
+        {
+            if (newCategory == null)
+                throw new ArgumentNullException(nameof(newCategory), "The newCategory cannot be null");
+
+            if (selectedSizeIds == null || !selectedSizeIds.Any())
+                throw new ArgumentException("You must selected at least one size");
+
+            try
+            {
+                // Add the new category to the database
+                _context.Categories.Add(newCategory);
+                await _context.SaveChangesAsync(); // Save the changes to generate the new CategoryID
+
+                // Create relations in SizeCategory to add each size selected.
+                var sizeCategories = selectedSizeIds.Select(size => new SizeCategory
+                {
+                    CategoryId = newCategory.CategoryId, // ID generated automatically
+                    SizeId = size.SizeId
+                });
+
+                _context.SizeCategories.AddRange(sizeCategories);
+                await _context.SaveChangesAsync(); // Save relations
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al crear la categoría con tamaños asociados.");
+                throw;
+            }
+        }
+
     }
 }
