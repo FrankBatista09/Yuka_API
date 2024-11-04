@@ -114,6 +114,25 @@ namespace YukaDAL.Repositories
             }
         }
 
+        public Task<List<Size>> SizeByCategory(int categoryID)
+        {
+            try
+            {
+                if (categoryID == null)
+                    throw new ArgumentNullException(nameof(categoryID), "The Id to get cannot be null");
+                return _context.SizeCategories
+                    .Where(sc => sc.CategoryId == categoryID)
+                    .Select(sc => sc.Size)
+                    .Distinct()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in SizeByCategory for SizeCategory entity");
+                throw;
+            }
+        }
+
         public async Task UpdateAsync(SizeCategory entity)
         {
             try
