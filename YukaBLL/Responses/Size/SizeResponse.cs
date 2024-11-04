@@ -1,6 +1,8 @@
-﻿namespace YukaBLL.Responses.Size
+﻿using YukaBLL.Core;
+
+namespace YukaBLL.Responses.Size
 {
-    public class SizeResponse
+    public class SizeResponse : ServiceResult
     {
     }
 }
