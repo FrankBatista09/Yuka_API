@@ -101,6 +101,7 @@ namespace YukaDAL.Repositories
                 if (id == null)
                     throw new ArgumentNullException(nameof(id), "The Id to get cannot be null");
                 return await _context.SizeCategories.FindAsync(id);
+                
             }
             catch (NullReferenceException exn)
             {
