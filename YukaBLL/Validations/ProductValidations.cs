@@ -2,6 +2,7 @@
 using YukaBLL.Core;
 using YukaBLL.Dtos.Product;
 using YukaBLL.Exceptions.Product;
+using YukaDAL.Entities;
 using YukaDAL.Interfaces;
 
 namespace YukaBLL.Validations
@@ -26,6 +27,12 @@ namespace YukaBLL.Validations
                 return result;
             }
 
+            if (addProductDto.CategoryId == null)
+            {
+                result.Success = false;
+                result.Message = "The category ID is required";
+                return result;
+            }
             try
             {
                 if (await productRepository.ExistsAsync(product => product.ProductName == addProductDto.ProductName))
@@ -69,10 +76,18 @@ namespace YukaBLL.Validations
                 return result;
             }
 
-            try
+            if (updateProductDto.CategoryId == null)
+            {
+                result.Success = false;
+                result.Message = "The category ID is required";
+                return result;
+            }
+
+                try
             {
                 if (await productRepository.ExistsAsync(product => product.ProductName == updateProductDto.ProductName))
                     throw new ProductNameExistsException(updateProductDto.ProductName);
+                
 
                 result.Message = "Product is valid to update.";
                 return result;
