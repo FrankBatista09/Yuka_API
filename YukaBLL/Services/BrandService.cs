@@ -55,14 +55,23 @@ namespace YukaBLL.Services
 
             try
             {
-                YukaDAL.Entities.Brand brand = new()
-                {
-                    BrandId = deleteBrandDto.BrandId,
-                    DeletedBy = deleteBrandDto.DeletedBy,
-                };
-                await _brandRepository.DeleteAsync(brand);
+                var brandFound = await _brandRepository.GetByIdAsync(deleteBrandDto.BrandId);
 
-                result.Message = "Brand deleted successfully";
+                if (brandFound != null)
+                {
+                    YukaDAL.Entities.Brand brand = new()
+                    {
+                        BrandId = deleteBrandDto.BrandId,
+                        DeletedBy = deleteBrandDto.DeletedBy,
+                    };
+                    await _brandRepository.DeleteAsync(brand);
+
+                    result.Message = "Brand deleted successfully";
+                    return result; 
+                }
+
+                result.Success=false;
+                result.Message = $"No brand found with ID {deleteBrandDto.BrandId}";
                 return result;
             }
             catch (Exception ex)

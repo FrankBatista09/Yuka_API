@@ -13,7 +13,7 @@ namespace YukaBLL.Validations.SizeValidations
 {
     public class SizeValidations
     {
-        public async Task<ServiceResult> IsValidSizeToAdd(AddSizeDto addSizeDto, ISizeRepository sizeRepository)
+        public static async Task<ServiceResult> IsValidSizeToAdd(AddSizeDto addSizeDto, ISizeRepository sizeRepository)
         {
             ServiceResult result = new ServiceResult ();
 
@@ -50,7 +50,7 @@ namespace YukaBLL.Validations.SizeValidations
             }
         }
 
-        public async Task<ServiceResult> IsValidSizeToUpdate(UpdateSizeDto updateSizeDto, ISizeRepository sizeRepository)
+        public static async Task<ServiceResult> IsValidSizeToUpdate(UpdateSizeDto updateSizeDto, ISizeRepository sizeRepository)
         {
             ServiceResult result = new ServiceResult ();
 
