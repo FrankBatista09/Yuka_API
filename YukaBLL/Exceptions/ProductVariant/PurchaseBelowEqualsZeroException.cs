@@ -13,7 +13,7 @@
         /// <summary>
         /// Creates an instance of the <see cref="PurchaseBelowEqualsZeroException"/> class.
         /// </summary>
-        /// <param name="purchase">Ammount to substract from the quantity column from <see cref="YukaDAL.Entities.ProductVariant"/></param>
+        /// <param name="purchase">Ammount to substract from the quantity column from<see cref="YukaDAL.Entities.ProductVariant"/></param>
         public PurchaseBelowEqualsZeroException(int purchase) :
             base($"The ammount to purchase is below or equal to zero. Please enter a valid ammount.")
         {
