@@ -150,8 +150,13 @@ namespace YukaBLL.Validations.ProductVariant
 
             try
             {
-                if (sellVariantDto.Quantity <= 0) 
+                var productVariant = await productVariantRepository.GetByIdAsync(sellVariantDto.VariantId);
+
+                if (sellVariantDto.Quantity <= 0)
                     throw new PurchaseBelowEqualsZeroException(sellVariantDto.Quantity);
+
+                if (productVariant.Quantity < sellVariantDto.Quantity)
+                    throw new StockBelowZeroException(productVariant.Quantity);
 
                 result.Message = "The product variant is valid to sell";
                 return result;
