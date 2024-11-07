@@ -92,11 +92,12 @@ namespace YukaBLL.Services
                 var sizes = await _sizeRepository.GetAllAsync();
 
                 result.Data = (from size in sizes
+                               where size.IsDeleted == false
                                select new SizeDto
                                {
                                    SizeId = size.SizeId,
                                    SizeName = size.SizeName
-                               });
+                               }).ToList();
                 result.Message = "Sizes retrieved successfully";
                 return result;
             }
@@ -115,13 +116,19 @@ namespace YukaBLL.Services
             {
                 var size = await _sizeRepository.GetByIdAsync(id);
 
-                result.Data = new SizeDto()
+                if (size != null)
                 {
-                    SizeId = size.SizeId,
-                    SizeName = size.SizeName
-                };
+                    result.Data = new SizeDto()
+                    {
+                        SizeId = size.SizeId,
+                        SizeName = size.SizeName
+                    };
 
-                result.Message = "Size retrieved successfully";
+                    result.Message = "Size retrieved successfully";
+                    return result; 
+                }
+                result.Success = false;
+                result.Message = "Product not found";
                 return result;
             }
             catch (Exception ex)
