@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="stock">The stock provided when creating the new variant</param>
         public StockBelowZeroException(int stock) : 
-            base($"The stock of the product variant is below zero: {stock}")
+            base($"If the purchase is done the stock of the product variant will be below zero: {stock}")
         {
             Stock = stock;
         }

@@ -85,7 +85,7 @@ namespace YukaBLL.Validations.CategoryValidations
         {
             ServiceResult result = new();
 
-            var availablesizes = await sizeRepository.GetAllAsync();
+            var availableSizes = await sizeRepository.GetAllAsync();
 
             if (addCategoryWithSizesDto.CategoryName.IsNullOrEmpty())
             {
@@ -101,10 +101,10 @@ namespace YukaBLL.Validations.CategoryValidations
                 return result;
             }
             // Check if the selected sizes are between 1 and the available sizes
-            if (addCategoryWithSizesDto.SelectedSizeIds.Count < 1 || addCategoryWithSizesDto.SelectedSizeIds.Count > availablesizes.Count)
+            if (addCategoryWithSizesDto.SelectedSizeIds.Count < 1 || addCategoryWithSizesDto.SelectedSizeIds.Count > availableSizes.Count)
             {
                 result.Success = false;
-                result.Message = $"You must select between 1 and {availablesizes.Count} of the avaiables sizes.";
+                result.Message = $"You must select between 1 and {availableSizes.Count} of the avaiables sizes.";
                 return result;
             }
             // Check if the selected sizes are not duplicated
@@ -123,10 +123,20 @@ namespace YukaBLL.Validations.CategoryValidations
                 result.Message = "Category is valid to be added";
                 return result;
             }
+            catch(CategoryNameExistsException ce)
+            {
+                result.Success = false;
+                result.Message = ce.Message;
+                result.Data = ce;
+                return result;
+            }
             catch (Exception ex)
             {
 
-                throw;
+                result.Success = false;
+                result.Message = "An error occurred while validating the category.";
+                result.Data = ex;
+                return result;
             }
         }
     }

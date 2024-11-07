@@ -33,7 +33,7 @@ namespace YukaBLL.Validations.SizeCategoryValidations
             try
             {
                 if (await sizeCategoryRepository.ExistsAsync(sc => sc.SizeId == addSizeCategoryDto.SizeId && sc.CategoryId == addSizeCategoryDto.CategoryId))
-                    throw new SizeCategoryExistsException(addSizeCategoryDto.CategoryId, addSizeCategoryDto.SizeId);
+                    throw new SizeCategoryExistsException(addSizeCategoryDto.SizeId, addSizeCategoryDto.CategoryId);
 
                 result.Message = "The size category is valid to add";
                 return result;
@@ -55,7 +55,7 @@ namespace YukaBLL.Validations.SizeCategoryValidations
             }
         }
 
-        public async Task<ServiceResult> IsValidSizeCategoryToUpdate (UpdateSizeCategoryDto updateSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
+        public async Task<ServiceResult> IsValidSizeCategoryToUpdate(UpdateSizeCategoryDto updateSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
         {
             ServiceResult result = new ServiceResult();
 
