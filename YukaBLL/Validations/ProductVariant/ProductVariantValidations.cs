@@ -12,7 +12,7 @@ namespace YukaBLL.Validations.ProductVariant
 {
     public class ProductVariantValidations
     {
-        private ServiceResult IsValidProductVariant(AddProductVariantDto addProductVariantDto)
+        private static ServiceResult IsValidProductVariant(AddProductVariantDto addProductVariantDto)
         {
             ServiceResult result = new ServiceResult();
 
@@ -60,7 +60,7 @@ namespace YukaBLL.Validations.ProductVariant
             return result;
         }
 
-        public async Task<ServiceResult> IsValidProductToAdd(AddProductVariantDto addProductVariantDto, 
+        public static async Task<ServiceResult> IsValidProductToAdd(AddProductVariantDto addProductVariantDto, 
             IProductVariantRepository productVariantRepository)
         {
             ServiceResult result = IsValidProductVariant(addProductVariantDto);
@@ -100,7 +100,7 @@ namespace YukaBLL.Validations.ProductVariant
             return result;
         }
 
-        public async Task<ServiceResult> IsValidProductVariantToUpdate (UpdateProductVariantDto updateProductVariantDto, 
+        public static async Task<ServiceResult> IsValidProductVariantToUpdate (UpdateProductVariantDto updateProductVariantDto, 
             IProductVariantRepository productVariantRepository)
         {
             ServiceResult result = new ServiceResult();
@@ -148,7 +148,7 @@ namespace YukaBLL.Validations.ProductVariant
             return result;
         }
 
-        public async Task<ServiceResult> IsValidProductVariantToSell(SellVariantDto sellVariantDto,
+        public static async Task<ServiceResult> IsValidProductVariantToSell(SellVariantDto sellVariantDto,
             IProductVariantRepository productVariantRepository)
         {
             ServiceResult result = new ServiceResult();
