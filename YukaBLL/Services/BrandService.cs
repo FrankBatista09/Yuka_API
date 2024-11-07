@@ -162,7 +162,6 @@ namespace YukaBLL.Services
                     };
 
                     await _brandRepository.UpdateAsync(brand);
-
                     result.Message = "Brand updated successfully";
                     return result;
                 }
