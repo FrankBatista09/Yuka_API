@@ -22,14 +22,14 @@ namespace YukaBLL.Validations.ProductVariant
                 result.Message = "The product is required.";
                 return result;
             }
-            
-            //if (addProductVariantDto.Quantity == null)
-            //{
-            //    result.Success = false;
-            //    result.Message = "The quantity is required.";
-            //    return result;
-            //}
-            
+
+            if (addProductVariantDto.Quantity == null)
+            {
+                result.Success = false;
+                result.Message = "The quantity is required.";
+                return result;
+            }
+
             if (addProductVariantDto.BrandId == null)
             {
                 result.Success = false;
@@ -65,29 +65,39 @@ namespace YukaBLL.Validations.ProductVariant
         {
             ServiceResult result = IsValidProductVariant(addProductVariantDto);
 
-            try
+            if (result.Success)
             {
-                if (await productVariantRepository.ExistsAsync(pv => pv.ProductId == addProductVariantDto.ProductId && pv.BrandId == addProductVariantDto.BrandId
-                                                                && pv.ColorId == addProductVariantDto.ColorId && pv.SizeId == addProductVariantDto.SizeId))
-                    throw new ProductVariantExistsException(addProductVariantDto.ProductId, addProductVariantDto.BrandId, addProductVariantDto.ColorId, addProductVariantDto.SizeId);
+                try
+                {
+                    if (await productVariantRepository
+                        .ExistsAsync(pv =>
+                        pv.ProductId == addProductVariantDto.ProductId
+                        && pv.BrandId == addProductVariantDto.BrandId
+                        && pv.ColorId == addProductVariantDto.ColorId
+                        && pv.SizeId == addProductVariantDto.SizeId))
+                        throw new ProductVariantExistsException(addProductVariantDto.ProductId,
+                            addProductVariantDto.BrandId, addProductVariantDto.ColorId, addProductVariantDto.SizeId);
 
-                result.Message = "The product variant is valid to be added";
-                return result;
+                    result.Message = "The product variant is valid to be added";
+                    return result;
+                }
+                catch (ProductVariantExistsException ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    result.Data = ex.Data;
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    result.Data = ex.Data;
+                    return result;
+                } 
             }
-            catch (ProductVariantExistsException ex)
-            {
-                result.Success= false;
-                result.Message = ex.Message;
-                result.Data = ex.Data;
-                return result; 
-            }     
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-                result.Data = ex.Data;
-                return result;
-            }
+
+            return result;
         }
 
         public async Task<ServiceResult> IsValidProductVariantToUpdate (UpdateProductVariantDto updateProductVariantDto, 
@@ -104,42 +114,44 @@ namespace YukaBLL.Validations.ProductVariant
             };
             result = IsValidProductVariant(addProductVariantDto);
 
-            try
+            if (result.Success)
             {
-                if(await productVariantRepository.ExistsAsync(pv => pv.ProductId == updateProductVariantDto.ProductId && pv.BrandId == updateProductVariantDto.BrandId
-                                                                && pv.ColorId == updateProductVariantDto.ColorId && pv.SizeId == updateProductVariantDto.SizeId))
-                    throw new ProductVariantExistsException(updateProductVariantDto.ProductId, updateProductVariantDto.BrandId, updateProductVariantDto.ColorId, updateProductVariantDto.SizeId);
+                try
+                {
+                    if (await productVariantRepository
+                        .ExistsAsync(pv =>
+                    pv.ProductId == updateProductVariantDto.ProductId
+                    && pv.BrandId == updateProductVariantDto.BrandId
+                    && pv.ColorId == updateProductVariantDto.ColorId
+                    && pv.SizeId == updateProductVariantDto.SizeId))
+                        throw new ProductVariantExistsException(updateProductVariantDto.ProductId,
+                            updateProductVariantDto.BrandId, updateProductVariantDto.ColorId, updateProductVariantDto.SizeId);
 
-                result.Message = "The product variant is valid to be updated";
-                return result;
+                    result.Message = "The product variant is valid to be updated";
+                    return result;
+                }
+                catch (ProductVariantExistsException ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    result.Data = ex.Data;
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    result.Success = false;
+                    result.Message = ex.Message;
+                    result.Data = ex.Data;
+                    return result;
+                } 
             }
-            catch (ProductVariantExistsException ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-                result.Data = ex.Data;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-                result.Data = ex.Data;
-                return result;
-            }
+            return result;
         }
 
         public async Task<ServiceResult> IsValidProductVariantToSell(SellVariantDto sellVariantDto,
             IProductVariantRepository productVariantRepository)
         {
             ServiceResult result = new ServiceResult();
-
-            if (sellVariantDto.Quantity == null || sellVariantDto.Quantity <= 0)
-            {
-                result.Success = false;
-                result.Message = "The quantity must be greater than zero.";
-                return result;
-            }
 
             if (sellVariantDto.VariantId == null)
             {
@@ -158,7 +170,17 @@ namespace YukaBLL.Validations.ProductVariant
                 if (productVariant.Quantity < sellVariantDto.Quantity)
                     throw new StockBelowZeroException(productVariant.Quantity);
 
+                if((productVariant.Quantity - sellVariantDto.Quantity) < 0)
+                    throw new StockBelowZeroException(productVariant.Quantity - sellVariantDto.Quantity);
+
                 result.Message = "The product variant is valid to sell";
+                return result;
+            }
+            catch(StockBelowZeroException ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+                result.Data = ex.Data;
                 return result;
             }
             catch (PurchaseBelowEqualsZeroException ex)

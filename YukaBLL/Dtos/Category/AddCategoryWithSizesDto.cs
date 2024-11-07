@@ -9,6 +9,6 @@ namespace YukaBLL.Dtos.Category
     public class AddCategoryWithSizesDto
     {
         public string CategoryName { get; set; }
-        public List<string> SelectedSizeIds { get; set; }
+        public List<int> SelectedSizeIds { get; set; }
     }
 }

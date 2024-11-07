@@ -136,7 +136,7 @@ namespace YukaDAL.Repositories
             }
         }
 
-        public async Task CreateCategoryWithSizesAsync(Category newCategory, List<Size> selectedSizeIds)
+        public async Task CreateCategoryWithSizesAsync(Category newCategory, List<int> selectedSizeIds)
         {
             if (newCategory == null)
                 throw new ArgumentNullException(nameof(newCategory), "The newCategory cannot be null");
@@ -154,7 +154,7 @@ namespace YukaDAL.Repositories
                 var sizeCategories = selectedSizeIds.Select(size => new SizeCategory
                 {
                     CategoryId = newCategory.CategoryId, // ID generated automatically
-                    SizeId = size.SizeId
+                    SizeId = size
                 });
 
                 _context.SizeCategories.AddRange(sizeCategories);
