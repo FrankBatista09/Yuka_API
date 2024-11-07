@@ -5,7 +5,7 @@ using YukaBLL.Exceptions.Product;
 using YukaDAL.Entities;
 using YukaDAL.Interfaces;
 
-namespace YukaBLL.Validations
+namespace YukaBLL.Validations.ProductValidations
 {
     public class ProductValidations
     {
@@ -83,11 +83,11 @@ namespace YukaBLL.Validations
                 return result;
             }
 
-                try
+            try
             {
                 if (await productRepository.ExistsAsync(product => product.ProductName == updateProductDto.ProductName))
                     throw new ProductNameExistsException(updateProductDto.ProductName);
-                
+
 
                 result.Message = "Product is valid to update.";
                 return result;

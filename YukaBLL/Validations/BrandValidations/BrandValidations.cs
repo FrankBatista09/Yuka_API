@@ -4,7 +4,7 @@ using YukaBLL.Dtos.Brand;
 using YukaBLL.Exceptions.Brand;
 using YukaDAL.Interfaces;
 
-namespace YukaBLL.Validations
+namespace YukaBLL.Validations.BrandValidations
 {
     public class BrandValidations
     {
@@ -31,7 +31,7 @@ namespace YukaBLL.Validations
                 // Verify if the brand already exists
                 if (await brandRepository.ExistsAsync(brand => brand.BrandName == addBrandDto.BrandName))
                     throw new BrandNameExistsException(addBrandDto.BrandName);
-                
+
 
                 result.Message = "Brand is valid to add.";
                 return result;
@@ -77,9 +77,7 @@ namespace YukaBLL.Validations
             {
                 // Verify if the brand already exists
                 if (await brandRepository.ExistsAsync(brand => brand.BrandName == updateBrandDto.BrandName))
-                {
                     throw new BrandNameExistsException(updateBrandDto.BrandName);
-                }
 
                 result.Success = true;
                 result.Message = "Brand is valid to update.";
