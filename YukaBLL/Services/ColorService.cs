@@ -9,6 +9,7 @@ using YukaBLL.Dtos.Brand;
 using YukaBLL.Dtos.Color;
 using YukaBLL.Responses.Color;
 using YukaBLL.Validations.ColorValidations;
+using YukaDAL.Entities;
 using YukaDAL.Repositories;
 
 namespace YukaBLL.Services
@@ -50,10 +51,8 @@ namespace YukaBLL.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return result;
+                throw;
             }
-
-            
         }
 
         public async Task<ColorDeleteResponse> DeleteColorAsync(DeleteColorDto deleteColorDto)
@@ -155,23 +154,30 @@ namespace YukaBLL.Services
 
             try
             {
-                var isValidToUpdate = await ColorValidations.IsValidColorToUpdate(updateColorDto, _colorRepository);
-
-                if (isValidToUpdate.Success)
+                var colorToUpdate = await _colorRepository.GetByIdAsync(updateColorDto.ColorId);
+                if (colorToUpdate != null)
                 {
-                    YukaDAL.Entities.Color color = new()
+                    var isValidToUpdate = await ColorValidations.IsValidColorToUpdate(updateColorDto, _colorRepository);
+
+                    if (isValidToUpdate.Success)
                     {
-                        ColorId = updateColorDto.ColorId,   
-                        ColorName = updateColorDto.ColorName,
-                        UpdatedBy = updateColorDto.UpdatedBy,
-                    };
-                    await _colorRepository.UpdateAsync(color);
-                    result.Message = "Color Updated successfully";
+                        YukaDAL.Entities.Color color = new()
+                        {
+                            ColorId = updateColorDto.ColorId,
+                            ColorName = updateColorDto.ColorName,
+                            UpdatedBy = updateColorDto.UpdatedBy,
+                        };
+                        await _colorRepository.UpdateAsync(color);
+                        result.Message = "Color Updated successfully";
+                        return result;
+                    }
+                    result.Success = false;
+                    result.Message = isValidToUpdate.Message;
+                    result.Data = isValidToUpdate.Data;
                     return result;
                 }
                 result.Success = false;
-                result.Message = isValidToUpdate.Message;
-                result.Data = isValidToUpdate.Data;
+                result.Message = "The color does not exists";
                 return result;
             }
             catch (Exception ex)

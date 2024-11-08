@@ -60,7 +60,7 @@ namespace YukaBLL.Validations.ProductVariant
             return result;
         }
 
-        public static async Task<ServiceResult> IsValidProductToAdd(AddProductVariantDto addProductVariantDto, 
+        public static async Task<ServiceResult> IsValidProductVariantToAdd(AddProductVariantDto addProductVariantDto, 
             IProductVariantRepository productVariantRepository)
         {
             ServiceResult result = IsValidProductVariant(addProductVariantDto);
@@ -184,6 +184,83 @@ namespace YukaBLL.Validations.ProductVariant
                 return result;
             }
             catch (PurchaseBelowEqualsZeroException ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+                result.Data = ex.Data;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+                result.Data = ex.Data;
+                return result;
+            }
+        }
+
+        public async static Task<ServiceResult> IsValidStockToAdd (AddStockDto addStockDto, IProductVariantRepository productVariantRepository)
+        {
+            ServiceResult result = new ServiceResult();
+
+            if (addStockDto.StockToAdd == null)
+            {
+                result.Success = false;
+                result.Message = "The quantity is required";
+                return result;
+            }
+
+            if (addStockDto.StockToAdd <= 0)
+            {
+                result.Success = false;
+                result.Message = "The quantity must be greater than 0";
+                return result;
+            }
+
+            return result;
+        }
+
+        public async static Task<ServiceResult> IsValidStockToUpdate(UpdateStockDto UpdateStockDto)
+        {
+            ServiceResult result = new ServiceResult();
+
+            if (UpdateStockDto.Stock == null)
+            {
+                result.Success = false;
+                result.Message = "The quantity is required";
+                return result;
+            }
+
+            if (UpdateStockDto.Stock <= 0)
+            {
+                result.Success = false;
+                result.Message = "The quantity must be greater than 0";
+                return result;
+            }
+
+            return result;
+        }
+
+        public async static Task<ServiceResult> IsValidPriceToUpdate (UpdatePriceDto updatePriceDto)
+        {
+            ServiceResult result = new ServiceResult();
+
+            if (updatePriceDto.Price == null)
+            {
+                result.Success = false;
+                result.Message = "The price is required";
+                return result;
+            }
+            try
+            {
+                if (updatePriceDto.Price <= 0)
+                    throw new PriceBelowEqualsZeroException(updatePriceDto.Price);
+
+                result.Success = true;
+                result.Message = "The price is valid to be updated";
+                return result;
+            }
+            catch (PriceBelowEqualsZeroException ex)
             {
                 result.Success = false;
                 result.Message = ex.Message;

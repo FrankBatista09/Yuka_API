@@ -26,5 +26,12 @@ namespace YukaBLL.Contracts
         /// <param name="deleteCategoryDto">The id of the category to be deleted.</param>
         /// <returns></returns>
         Task<CategoryDeleteResponse> DeleteCategoryAsync(DeleteCategoryDto deleteCategoryDto);
+        
+        /// <summary>
+        /// Creates a category with its own sizes
+        /// </summary>
+        /// <param name="addCategoryWithSizesDto">The new cateogry to add and the list of sizes for the category</param>
+        /// <returns></returns>
+        Task<CategoryWithSizeAddResponse> AddCategoryWithSize(AddCategoryWithSizesDto addCategoryWithSizesDto);
     }
 }

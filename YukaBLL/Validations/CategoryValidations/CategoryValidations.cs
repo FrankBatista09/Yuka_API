@@ -81,7 +81,7 @@ namespace YukaBLL.Validations.CategoryValidations
             }
         }
 
-        public async Task<ServiceResult> IsValidToAddCategoryWithSize (AddCategoryWithSizesDto addCategoryWithSizesDto, ICategoryRepository categoryRepository, ISizeRepository sizeRepository)
+        public static async Task<ServiceResult> IsValidToAddCategoryWithSize (AddCategoryWithSizesDto addCategoryWithSizesDto, ICategoryRepository categoryRepository, ISizeRepository sizeRepository)
         {
             ServiceResult result = new();
 

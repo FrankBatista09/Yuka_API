@@ -38,7 +38,7 @@ namespace YukaBLL.Services
                     result.Message = "Size created successfully";
                     return result;
                 }
-
+                result.Success = false;     
                 result.Message = IsValidToAdd.Message;
                 return result;
             }
@@ -91,14 +91,20 @@ namespace YukaBLL.Services
             {
                 var sizes = await _sizeRepository.GetAllAsync();
 
-                result.Data = (from size in sizes
-                               where size.IsDeleted == false
-                               select new SizeDto
-                               {
-                                   SizeId = size.SizeId,
-                                   SizeName = size.SizeName
-                               }).ToList();
-                result.Message = "Sizes retrieved successfully";
+                if (sizes.Any())
+                {
+                    result.Data = (from size in sizes
+                                   where size.IsDeleted == false
+                                   select new SizeDto
+                                   {
+                                       SizeId = size.SizeId,
+                                       SizeName = size.SizeName
+                                   }).ToList();
+                    result.Message = "Sizes retrieved successfully";
+                    return result; 
+                }
+                result.Success = false;
+                result.Message = "No sizes found";
                 return result;
             }
             catch (Exception ex)

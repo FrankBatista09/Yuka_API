@@ -165,7 +165,7 @@ namespace YukaBLL.Services
                     result.Message = "Brand updated successfully";
                     return result;
                 }
-                result.Success=false;
+                result.Success = false;
                 result.Message = IsValidToUpdate.Message;
                 result.Data = IsValidToUpdate.Data;
                 return result;
