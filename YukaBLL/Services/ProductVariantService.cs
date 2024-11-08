@@ -18,9 +18,57 @@ namespace YukaBLL.Services
             _productVariantRepository = productVariantRepository;
             _logger = logger;
         }
-        public Task<ProductVariantAddResponse> AddBulkAsync(List<AddProductVariantDto> addProductVariantDtos)
+        public async Task<ProductVariantAddResponse> AddBulkAsync(List<AddProductVariantDto> addProductVariantDtos)
         {
-            throw new NotImplementedException();
+            ProductVariantAddResponse result = new ProductVariantAddResponse();
+            try
+            {
+                List<YukaDAL.Entities.ProductVariant> productVariants = new();
+
+                foreach (var item in addProductVariantDtos)
+                {
+                    var isValidProductVariant = await ProductVariantValidations.IsValidProductVariantToAdd(item, _productVariantRepository);
+
+                    if (isValidProductVariant.Success)
+                    {
+                        YukaDAL.Entities.ProductVariant productVariant = new()
+                        {
+                            ProductId = item.ProductId,
+                            SizeId = item.SizeId,
+                            ColorId = item.ColorId,
+                            Price = item.Price,
+                            Quantity = item.Quantity,
+                            BrandId = item.BrandId,
+                            CreatedBy = item.CreatedBy
+                        };
+                        productVariants.Add(productVariant);
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        result.Message = isValidProductVariant.Message;
+                        result.Data = isValidProductVariant.Data;
+                        return result;
+                    }
+                }
+                if (productVariants.Any())
+                {
+                    await _productVariantRepository.BulkCreateAsync(productVariants);
+                    result.Message = "Product variants added successfully";
+                    return result;
+                }
+                else
+                {
+                    result.Success = false;
+                    result.Message = "No product variant added";
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
         }
 
         public async Task<ProductVariantAddResponse> AddProductVariantAsync(AddProductVariantDto addProductVariantDto)
