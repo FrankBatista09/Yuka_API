@@ -170,9 +170,6 @@ namespace YukaBLL.Validations.ProductVariant
                 if (productVariantQuantity < sellVariantDto.Quantity)
                     throw new StockBelowZeroException(productVariantQuantity);
 
-                if((productVariantQuantity - sellVariantDto.Quantity) < 0)
-                    throw new StockBelowZeroException(productVariantQuantity- sellVariantDto.Quantity);
-
                 result.Message = "The product variant is valid to sell";
                 return result;
             }
