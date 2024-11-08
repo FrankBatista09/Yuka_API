@@ -27,6 +27,7 @@ namespace YukaDAL.Repositories
 
             try
             {
+                entity.CreatedDate = DateTime.UtcNow;
                 await _context.Brands.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return entity;

@@ -39,6 +39,7 @@ namespace YukaBLL.Services
                             Price = item.Price,
                             Quantity = item.Quantity,
                             BrandId = item.BrandId,
+                            CreatedDate = DateTime.UtcNow,
                             CreatedBy = item.CreatedBy
                         };
                         productVariants.Add(productVariant);
@@ -112,14 +113,15 @@ namespace YukaBLL.Services
 
             try
             {
-                var stokcToUpdate = await _productVariantRepository.GetByIdAsync(addToStockDto.ProductVariantId);
-                if (stokcToUpdate != null)
+                var stockToUpdate = await _productVariantRepository.GetByIdAsync(addToStockDto.ProductVariantId);
+                if (stockToUpdate != null)
                 {
                     var isValidStock = await ProductVariantValidations.IsValidStockToAdd(addToStockDto, _productVariantRepository);
                     if (isValidStock.Success)
                     {
                         YukaDAL.Entities.ProductVariant productVariant = new()
                         {
+                            VariantId = addToStockDto.ProductVariantId,
                             Quantity = addToStockDto.StockToAdd,
                             UpdatedBy = addToStockDto.UpdatedBy
                         };
@@ -320,6 +322,7 @@ namespace YukaBLL.Services
                             ProductId = updateProductVariantDto.ProductId,
                             SizeId = updateProductVariantDto.SizeId,
                             ColorId = updateProductVariantDto.ColorId,
+                            BrandId = updateProductVariantDto.BrandId,
                             UpdatedBy = updateProductVariantDto.UpdatedBy
                         };
                         await _productVariantRepository.UpdateAsync(productVariant);

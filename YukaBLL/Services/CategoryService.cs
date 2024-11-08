@@ -68,8 +68,8 @@ namespace YukaBLL.Services
                         CategoryName = addCategoryWithSizesDto.CategoryName,
                         CreatedBy = addCategoryWithSizesDto.CreatedBy
                     };
-                    var selectedSizedIds = addCategoryWithSizesDto.SelectedSizeIds;
-                    await _categoryRepository.CreateCategoryWithSizesAsync(category, selectedSizedIds);
+                    
+                    await _categoryRepository.CreateCategoryWithSizesAsync(category, addCategoryWithSizesDto.SelectedSizeIds);
 
                     result.Message = "Category with sizes added successfully";
                     return result;

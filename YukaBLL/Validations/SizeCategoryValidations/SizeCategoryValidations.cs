@@ -10,9 +10,9 @@ using YukaDAL.Interfaces;
 
 namespace YukaBLL.Validations.SizeCategoryValidations
 {
-    public class SizeCategoryValidations
+    public static class SizeCategoryValidations
     {
-        public async Task<ServiceResult> IsValidSizeCategoryToAdd (AddSizeCategoryDto addSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
+        public static async Task<ServiceResult> IsValidSizeCategoryToAdd (AddSizeCategoryDto addSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
         {
             ServiceResult result = new ServiceResult();
 
@@ -55,7 +55,7 @@ namespace YukaBLL.Validations.SizeCategoryValidations
             }
         }
 
-        public async Task<ServiceResult> IsValidSizeCategoryToUpdate(UpdateSizeCategoryDto updateSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
+        public static async Task<ServiceResult> IsValidSizeCategoryToUpdate(UpdateSizeCategoryDto updateSizeCategoryDto, ISizeCategoryRepository sizeCategoryRepository)
         {
             ServiceResult result = new ServiceResult();
 

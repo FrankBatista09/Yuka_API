@@ -28,6 +28,7 @@ namespace YukaDAL.Repositories
             {
                 if (entity == null) 
                     throw new ArgumentNullException(nameof(entity), "The entity created cannot be null.");
+                entity.CreatedDate = DateTime.UtcNow;
                 await _context.SizeCategories.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return entity;
@@ -48,7 +49,7 @@ namespace YukaDAL.Repositories
         {
             try
             {
-                var sizeCategory = await GetByIdAsync(entity.CategoryId);
+                var sizeCategory = await GetByIdsAsync(entity.CategoryId, entity.SizeId);
                 if (sizeCategory == null)
                     throw new NullReferenceException("The entity to delete does not exist");
                 sizeCategory.DeletedDate = DateTime.UtcNow;
@@ -115,6 +116,26 @@ namespace YukaDAL.Repositories
             }
         }
 
+        public async Task<SizeCategory> GetByIdsAsync(int categoryID, int sizeID)
+        {
+            try
+            {
+                return await _context.SizeCategories
+                    .Where(sc => sc.CategoryId == categoryID && sc.SizeId == sizeID)
+                    .FirstOrDefaultAsync();
+            }
+            catch (NullReferenceException exn)
+            {
+                _logger.LogError(exn, "The Ids to get do not exist");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred in GetByIdsAsync for SizeCategory entity");
+                throw;
+            }
+        }
+
         public Task<List<Size>> SizeByCategory(int categoryID)
         {
             try
@@ -138,7 +159,7 @@ namespace YukaDAL.Repositories
         {
             try
             {
-                var existingSizeCategory = await GetByIdAsync(entity.SizeId);
+                var existingSizeCategory = await GetByIdsAsync(entity.CategoryId, entity.SizeId);
                 if (existingSizeCategory == null)
                     throw new NullReferenceException("The entity to update does not exist");
 
