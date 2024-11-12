@@ -29,6 +29,8 @@ namespace YukaDAL.Repositories
             {
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity), "The entity created cannot be null.");
+
+                entity.CreatedDate = DateTime.UtcNow;
                 await _context.Products.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return entity;

@@ -25,6 +25,7 @@ namespace YukaDAL.Repositories
                 if(entity == null)
                     throw new ArgumentNullException(nameof(entity), "The entity to create cannot be null.");
 
+                entity.CreatedDate = DateTime.UtcNow;
                 await _context.Categories.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return entity;
@@ -136,7 +137,7 @@ namespace YukaDAL.Repositories
             }
         }
 
-        public async Task CreateCategoryWithSizesAsync(Category newCategory, List<Size> selectedSizeIds)
+        public async Task CreateCategoryWithSizesAsync(Category newCategory, List<int> selectedSizeIds)
         {
             if (newCategory == null)
                 throw new ArgumentNullException(nameof(newCategory), "The newCategory cannot be null");
@@ -154,7 +155,7 @@ namespace YukaDAL.Repositories
                 var sizeCategories = selectedSizeIds.Select(size => new SizeCategory
                 {
                     CategoryId = newCategory.CategoryId, // ID generated automatically
-                    SizeId = size.SizeId
+                    SizeId = size
                 });
 
                 _context.SizeCategories.AddRange(sizeCategories);

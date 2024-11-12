@@ -11,6 +11,6 @@ namespace YukaDAL.Interfaces
         /// <param name="newCategory"></param>
         /// <param name="selectedSizeIds"></param>
         /// <returns></returns>
-        Task CreateCategoryWithSizesAsync(Category newCategory, List<Size> selectedSizeIds);
+        Task CreateCategoryWithSizesAsync(Category newCategory, List<int> selectedSizeIds);
     }
 }
