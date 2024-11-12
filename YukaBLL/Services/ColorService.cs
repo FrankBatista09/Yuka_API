@@ -10,16 +10,17 @@ using YukaBLL.Dtos.Color;
 using YukaBLL.Responses.Color;
 using YukaBLL.Validations.ColorValidations;
 using YukaDAL.Entities;
+using YukaDAL.Interfaces;
 using YukaDAL.Repositories;
 
 namespace YukaBLL.Services
 {
     public class ColorService : IColorService
     {
-        private readonly ColorRepository _colorRepository;
+        private readonly IColorRepository _colorRepository;
         private readonly ILogger<ColorService> _logger;
 
-        public ColorService (ColorRepository colorRepository, ILogger<ColorService> logger)
+        public ColorService (IColorRepository colorRepository, ILogger<ColorService> logger)
         {
             _colorRepository = colorRepository;
             _logger = logger;

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using YukaDAL.Entities;
 
 namespace YukaDAL.Context
 {
-    public class YukaContext : DbContext
+    public class YukaContext : IdentityDbContext<ApplicationUser, IdentityRole, String>
     {
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
@@ -18,6 +20,8 @@ namespace YukaDAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             #region Brand configurations
             //Indicate the primary key
             modelBuilder.Entity<Brand>()
