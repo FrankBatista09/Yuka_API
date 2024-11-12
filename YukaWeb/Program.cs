@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using YukaDAL.Context;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using YukaDAL.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,13 @@ builder.Services.AddDbContext<YukaContext>(options =>
         }
         ));
 
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<YukaContext>()
+    .AddDefaultTokenProviders()
+    .AddApiEndpoints();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +44,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.MapIdentityApi<ApplicationUser>();  
 app.MapControllers();
 
 app.Run();
