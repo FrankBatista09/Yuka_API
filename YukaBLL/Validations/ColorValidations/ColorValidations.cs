@@ -13,7 +13,7 @@ namespace YukaBLL.Validations.ColorValidations
 {
     public class ColorValidations
     {
-        public async Task<ServiceResult> IsValidColorToAdd (AddColorDto addColorDto, IColorRepository colorRepository)
+        public static async Task<ServiceResult> IsValidColorToAdd (AddColorDto addColorDto, IColorRepository colorRepository)
         {
             ServiceResult result = new ServiceResult ();
 
@@ -49,7 +49,7 @@ namespace YukaBLL.Validations.ColorValidations
             }
         }
 
-        public async Task<ServiceResult> IsValidColorToUpdate (UpdateColorDto updateColorDto, IColorRepository colorRepository)
+        public static async Task<ServiceResult> IsValidColorToUpdate (UpdateColorDto updateColorDto, IColorRepository colorRepository)
         {
             ServiceResult result = new ServiceResult ();
 

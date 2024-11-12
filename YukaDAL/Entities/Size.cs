@@ -5,7 +5,7 @@ namespace YukaDAL.Entities
     public class Size : Entity
     {
         public int SizeId { get; set; }
-        public required string SizeName { get; set; }
+        public string SizeName { get; set; }
 
         //Relations
         public ICollection<SizeCategory> SizeCategories { get; set; }
