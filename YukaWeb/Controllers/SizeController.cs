@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using YukaBLL.Contracts;
 using YukaWeb.TokenEmissor;
 
@@ -24,23 +28,62 @@ namespace YukaWeb.Controllers
             // Obtener los tamaños desde el servicio
             var sizes = await _sizeService.GetAllAsync();
 
-            var tokenHandler = new TokenHandler(_configuration);
-            var token = tokenHandler.GenerateToken("1", "Juan", "juanklk@gmail.com", "Admin");
-
             // Retornar ambos en un objeto anónimo
-            return Ok(new
-            {
-                Sizes = sizes,
-                Token = token
-            });
+            return Ok(sizes);
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public IActionResult Get(int id)
         {
-            
-            return Ok("Data for admin only");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            return Ok(new
+            {
+                Message = "Data for admin only",
+                UserId = userId,
+                UserRole = userRole
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            //var tokenHandler = new TokenHandler(_configuration);
+            if (email == "juanklk@gmail.com" && password == "klk123")
+                return Ok(GenerateToken("1", "Juan", email, "Admin"));
+
+            return Unauthorized();
+        }
+
+        private string GenerateToken(string userId, string userName, string email, string role)
+        {
+            var key = Encoding.ASCII.GetBytes(_configuration["JWT:Key"]);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.GivenName, userName),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role)
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(8), // Duración del token
+                Issuer = _configuration["JWT:Issuer"],
+                Audience = _configuration["JWT:Audience"],
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
     }

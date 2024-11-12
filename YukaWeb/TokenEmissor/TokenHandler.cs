@@ -29,7 +29,7 @@ namespace YukaWeb.TokenEmissor
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.GivenName, userName),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role)
             };
