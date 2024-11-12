@@ -1,0 +1,6 @@
+@YukaWebApi_HostAddress = http://localhost:5088
+
+GET {{YukaWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
