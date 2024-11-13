@@ -15,4 +15,15 @@
     <ProjectReference Include="..\YukaBLL\YukaBLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Color\" />
+    <Folder Include="Dtos\Brand\" />
+    <Folder Include="Dtos\Category\" />
+    <Folder Include="Dtos\SizeCategory\" />
+    <Folder Include="Dtos\ProductVariant\" />
+    <Folder Include="Dtos\Size\" />
+    <Folder Include="Dtos\Product\" />
+    <Folder Include="Dtos\User\" />
+  </ItemGroup>
+
 </Project>

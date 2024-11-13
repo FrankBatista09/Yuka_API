@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YukaBLL", "YukaBLL\YukaBLL.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YukaWebApi", "YukaWebApi\YukaWebApi.csproj", "{527C8F7A-C17C-4B33-BF47-54622D808931}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{127414D8-D9B6-45A7-9807-6D66A99C57AF}"
+	ProjectSection(SolutionItems) = preProject
+		sendEmail.js = sendEmail.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
