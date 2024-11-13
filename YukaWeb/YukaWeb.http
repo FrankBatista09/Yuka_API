@@ -1,6 +1,0 @@
-@YukaWeb_HostAddress = http://localhost:5134
-
-GET {{YukaWeb_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
