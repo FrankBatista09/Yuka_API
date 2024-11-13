@@ -4,6 +4,7 @@ using YukaBLL.Dtos.Product;
 using YukaBLL.Dtos.ProductVariant;
 using YukaBLL.Responses.ProductVariant;
 using YukaBLL.Validations.ProductVariant;
+using YukaDAL.Entities;
 using YukaDAL.Interfaces;
 
 namespace YukaBLL.Services
@@ -12,11 +13,20 @@ namespace YukaBLL.Services
     {
         private readonly IProductVariantRepository _productVariantRepository;
         private readonly ILogger<ProductVariantService> _logger;
+        private readonly ISizeRepository _sizeRepository;
+        private readonly IBrandRepository _brandRepository;
+        private readonly IColorRepository _colorRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductVariantService(IProductVariantRepository productVariantRepository, ILogger<ProductVariantService> logger)
+        public ProductVariantService(IProductVariantRepository productVariantRepository, ILogger<ProductVariantService> logger,
+            ISizeRepository sizeRepository, IBrandRepository brandRepository, IColorRepository colorRepository, IProductRepository productRepository)
         {
             _productVariantRepository = productVariantRepository;
             _logger = logger;
+            _sizeRepository = sizeRepository;
+            _brandRepository = brandRepository;
+            _colorRepository = colorRepository;
+            _productRepository = productRepository;
         }
         public async Task<ProductVariantAddResponse> AddBulkAsync(List<AddProductVariantDto> addProductVariantDtos)
         {
@@ -137,7 +147,7 @@ namespace YukaBLL.Services
                 result.Success = false;
                 result.Message = "The produc variant does not exist";
                 return result;
-                
+
             }
             catch (Exception ex)
             {
@@ -183,21 +193,35 @@ namespace YukaBLL.Services
             try
             {
                 var productvariants = await _productVariantRepository.GetAllAsync();
+                var brands = await _brandRepository.GetAllAsync();
+                var products = await _productRepository.GetAllAsync();
+                var sizes = await _sizeRepository.GetAllAsync();
+                var colors = await _colorRepository.GetAllAsync();
 
                 if (productvariants.Any())
                 {
                     result.Data = (
                         from productvariant in productvariants
+                        join brand in brands on productvariant.BrandId equals brand.BrandId
+                        join product in products on productvariant.ProductId equals product.ProductId
+                        join size in sizes on productvariant.SizeId equals size.SizeId
+                        join color in colors on productvariant.ColorId equals color.ColorId
                         where productvariant.IsDeleted = false
-                        select new ProductVariantDto 
-                        {   
-                            ProductId = productvariant.ProductId,
-                            SizeId = productvariant.SizeId,
-                            ColorId = productvariant.ColorId,
-                            Price = productvariant.Price,
-                            Quantity = productvariant.Quantity,
+                        orderby product.ProductName, brand.BrandName, color.ColorName, size.SizeName
+                        select new ProductVariantDto
+                        {
                             VariantId = productvariant.VariantId,
-                            BrandId = productvariant.BrandId
+                            ProductId = productvariant.ProductId,
+                            ProductName = product.ProductName,
+                            BrandId = productvariant.BrandId,
+                            BrandName = brand.BrandName,    
+                            ColorId = productvariant.ColorId,
+                            ColorName = color.ColorName,
+                            SizeId = productvariant.SizeId,
+                            SizeName = size.SizeName,
+                            Price = productvariant.Price,
+                            Quantity = productvariant.Quantity,                
+                          
                         }).ToList();
                     result.Message = "Product variants retrieved successfully";
                     return result;
@@ -220,18 +244,25 @@ namespace YukaBLL.Services
             try
             {
                 var productvariant = await _productVariantRepository.GetByIdAsync(id);
-
+                var product = await _productRepository.GetByIdAsync(productvariant.ProductId);
+                var brand = await _brandRepository.GetByIdAsync(productvariant.BrandId);
+                var size = await _sizeRepository.GetByIdAsync(productvariant.SizeId);
+                var color = await _colorRepository.GetByIdAsync(productvariant.BrandId);
                 if (productvariant != null)
                 {
                     result.Data = new ProductVariantDto
                     {
-                        ProductId = productvariant.ProductId,
-                        SizeId = productvariant.SizeId,
-                        ColorId = productvariant.ColorId,
-                        Price = productvariant.Price,
-                        Quantity = productvariant.Quantity,
                         VariantId = productvariant.VariantId,
-                        BrandId = productvariant.BrandId
+                        ProductId = productvariant.ProductId,
+                        ProductName = product.ProductName,
+                        BrandId = productvariant.BrandId,
+                        BrandName = brand.BrandName,
+                        ColorId = productvariant.ColorId,
+                        ColorName = color.ColorName,
+                        SizeId = productvariant.SizeId,
+                        SizeName = size.SizeName,
+                        Price = productvariant.Price,
+                        Quantity = productvariant.Quantity
                     };
 
                     result.Message = "Product variant retrieved successfully";
@@ -287,7 +318,7 @@ namespace YukaBLL.Services
                         Price = updatePriceDto.Price,
                         UpdatedBy = updatePriceDto.UpdatedBy
                     };
-                    await _productVariantRepository.UpdatePriceAsync(productVariant);   
+                    await _productVariantRepository.UpdatePriceAsync(productVariant);
                     result.Message = "Price updated successfully";
                     return result;
                 }
@@ -332,7 +363,7 @@ namespace YukaBLL.Services
                     result.Success = false;
                     result.Message = isValidToUpdate.Message;
                     result.Data = isValidToUpdate.Data;
-                    return result; 
+                    return result;
                 }
                 result.Success = false;
                 result.Message = "Product variant not found";
